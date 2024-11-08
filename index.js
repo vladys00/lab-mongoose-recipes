@@ -52,8 +52,28 @@ mongoose
     recipeArray.forEach((element) => {
       console.log(`Title --> ${element.title}`);
     });
+    return Recipe.findOneAndUpdate(
+      { title: "Rigatoni alla Genovese" },
+      { duration: 100 },
+      { new: true }
+    );
+  })
+  .then((updatedRecipe) => {
+    console.log(`Succesfully updated ${updatedRecipe}`);
+    return Recipe.deleteOne({
+      name: "Carrot Cake",
+    });
+  })
+  .then((carrotCake)=>{
+    console.log(`Succesfully deleted ${carrotCake}`)
+    return mongoose.connection.close();
+  })
+  .then(() => {
+    console.log("Connection closed");
+    process.exit(1);
   })
 
   .catch((error) => {
     console.error("Error connecting to the database", error);
+    process.exit()
   });
